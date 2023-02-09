@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   carouselItem: {
-    height: "100%",
+    height: 200,
     aspectRatio: 1.3,
     marginHorizontal: 12,
     display: 'flex',
@@ -44,8 +44,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   itemName: {
-    fontSize: 16,
-    textAlign: 'center'
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 8
   },
   itemPrice: {
     fontSize: 18,

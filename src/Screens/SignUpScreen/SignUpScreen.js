@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React from "react";
@@ -11,9 +12,63 @@ import image from "../../assets/images/background/LoginBg.png";
 import { useForm } from "react-hook-form";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import validationSchema from "./validation";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Input from "../../Components/Input";
+import { signup, signUp } from "../../Store/Auth/service";
+import { signUpActions } from "../../Store/Auth/actions";
+import { useDispatch } from "react-redux";
+import { RETCODE_SUCCESS, SUCCESS } from "../../config/constants";
+import { showAlert } from "../../Store/alert/actions";
+import { useNavigation } from "@react-navigation/native";
 
 export default function SignUpScreen() {
+  const form = useForm({
+    resolver: yupResolver(validationSchema()),
+    mode: "all",
+  });
+  const navigation = useNavigation();
 
+  const dispatch = useDispatch();
+  const onSubmit = async () => {
+    // dispatch(
+    //   signUpActions({
+    //     userName: form.getValues("username"),
+    //     email: form.getValues("email"),
+    //     phone: form.getValues("phone"),
+    //     password: form.getValues("password"),
+    //     confirmPassword: form.getValues("repassword"),
+    //   })
+    // );
+    try {
+      const res = await signup({
+        userName: form.getValues("username"),
+        email: form.getValues("email"),
+        phone: form.getValues("phone"),
+        password: form.getValues("password"),
+        confirmPassword: form.getValues("repassword"),
+      });
+      if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
+        dispatch(
+          showAlert({
+            type: "success",
+            message: res.data.retText,
+          })
+        );
+        navigation.navigate("Login");
+      } else {
+        dispatch(
+          showAlert({
+            type: "error",
+            message: res.data.retText,
+          })
+        );
+      }
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+    }
+  };
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{
@@ -36,49 +91,68 @@ export default function SignUpScreen() {
             <Text style={styles.loginTitle}>Đăng ký</Text>
           </View>
           <View style={styles.loginFormWrapper}>
-            <TextInput
-              style={styles.loginInput}
+            <Input
+              name="username"
+              containerStyle={styles.loginInput}
               placeholder={"Tên đăng nhập"}
+              height={20}
+              required
               placeholderTextColor="white"
+              {...form}
             />
-            <TextInput
-              style={styles.loginInput}
+            <Input
+              name="password"
+              containerStyle={styles.loginInput}
               placeholder={"Mật khẩu"}
+              isPassword={true}
+              height={20}
+              required
               placeholderTextColor="white"
-              secureTextEntry={true}
+              {...form}
             />
-            <TextInput
-              style={styles.loginInput}
+            <Input
+              name="repassword"
+              containerStyle={styles.loginInput}
               placeholder={"Xác nhận mật khẩu"}
+              isPassword={true}
+              height={20}
+              required
               placeholderTextColor="white"
-              secureTextEntry={true}
+              {...form}
             />
-            <TextInput
-              style={styles.loginInput}
+            <Input
+              name="email"
+              containerStyle={styles.loginInput}
               placeholder={"Email"}
+              height={20}
               placeholderTextColor="white"
+              {...form}
             />
-            <TextInput
-              style={styles.loginInput}
+
+            <Input
+              name="phone"
+              containerStyle={styles.loginInput}
               placeholder={"Số điện thoại"}
+              height={20}
               placeholderTextColor="white"
+              {...form}
             />
           </View>
           <View style={styles.loginFooter}>
             <View style={styles.loginFooterPart}>
-              <Pressable style={styles.loginButton}>
+              <TouchableOpacity style={styles.loginButton} onPress={onSubmit}>
                 <Text
                   style={{
                     color: "white",
                     fontSize: 24,
                     width: "100%",
                     textAlign: "center",
-                    fontWeight: "bold"
+                    fontWeight: "bold",
                   }}
                 >
                   ĐĂNG KÝ
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -114,7 +188,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     display: "flex",
     backgroundColor: "rgba(52, 52, 52, 0.8)",
-    paddingBottom: 20
+    paddingBottom: 20,
   },
   loginTitleWrapper: {
     marginVertical: 20,

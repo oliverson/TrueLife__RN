@@ -14,6 +14,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import CheckBox from "../../Components/CheckBox/CheckBox";
 import Header from "./Components/Header/Header";
+import { useSelector } from "react-redux";
+import { userDataSelector } from "../../Store/Auth/selectors";
 
 export default function Personal() {
   const navigation = useNavigation();
@@ -22,6 +24,8 @@ export default function Personal() {
     phone: "0909319641",
     address: "B386/15, kp3, DHT, Q12",
   });
+  const profileData = useSelector(userDataSelector);
+  console.log("DATA USER", JSON.stringify(profileData, null, 4));
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.mainWrapper}>
@@ -60,7 +64,9 @@ export default function Personal() {
           ]}
           onPress={() => navigation.navigate("PurchaseHistory")}
         >
-          <Text style={{ fontSize: 18, color: "#999999" }}>LỊCH SỬ MUA HÀNG</Text>
+          <Text style={{ fontSize: 18, color: "#999999" }}>
+            LỊCH SỬ MUA HÀNG
+          </Text>
         </TouchableOpacity>
       </View>
       <NavBarBottom />

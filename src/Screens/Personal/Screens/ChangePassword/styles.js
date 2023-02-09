@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     color: "#999999",
   },
   inputArticle: {
+    width: '80%',
     paddingHorizontal: 15,
     paddingVertical: 10,
     backgroundColor: "white",
@@ -24,6 +25,10 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: "#d9d9d9",
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: 8
   },
   confirmBtn: {
     paddingVertical: 10,
@@ -32,7 +37,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     backgroundColor: "#FA748F",
-    marginTop: 15, 
+    marginTop: 15,
     borderRadius: 8
   },
 });

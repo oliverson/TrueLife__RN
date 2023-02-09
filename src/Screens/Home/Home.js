@@ -1,59 +1,65 @@
-import { Image, StyleSheet, Text, View, FlatList } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./styles";
 import NavBarBottom from "../../Components/NavBarBottom/NavBarBottom";
 import CategoryProducts from "./components/CategoryProducts/CategoryProducts";
 import { ScrollView } from "react-native-gesture-handler";
 
+import { RETCODE_SUCCESS, SUCCESS } from "../../config/constants";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getListProductsContentActions,
+  getTopSixNewProductsActions,
+  getTopSixProductsPromotionActions,
+  getTopSixSellingProductsActions,
+} from "../../Store/Production/actions";
+import {
+  productSixNewProductDataSelector,
+  productSixProductPromotionDataSelector,
+  productSixSellingProductDataSelector,
+} from "../../Store/Production/selectors";
+
 export default function Home() {
-  const [sliderWidth, setSliderWidth] = useState(400);
+  const [sliderWidth, setSliderWidth] = useState(200);
   const [currentFlatlistIndex, setCurrentFlatlistIndex] = useState(0);
   const [currentOffsetX, setCurrentOffsetX] = useState(0);
   const flatlistRef = useRef();
-
+  // const [dataTopSixNewProducts, setDataTopSixNewProducts] = useState("");
+  const dataTopSixSellingProducts = useSelector(
+    productSixSellingProductDataSelector
+  );
+  const dataTopSixNewProducts = useSelector(productSixNewProductDataSelector);
+  const dataTopSixProductsPromotion = useSelector(
+    productSixProductPromotionDataSelector
+  );
   const handleScroll = (e) => {
     setCurrentOffsetX(e.nativeEvent.contentOffset.x);
   };
-  const carouselData = [
-    {
-      id: 1,
-      src: "https://images.unsplash.com/photo-1661961111184-11317b40adb2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1744&q=80",
-      name: "Sản phẩm A",
-      price: "1.900.000",
-    },
-    {
-      id: 2,
-      src: "https://images.unsplash.com/photo-1670272502307-5539ca02550a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80",
-      name: "Sản phẩm A",
-      price: "1.900.000",
-    },
-    {
-      id: 3,
-      src: "https://images.unsplash.com/photo-1672957581665-bdc4a16b8347?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
-      name: "Sản phẩm A",
-      price: "1.900.000",
-    },
-    {
-      id: 4,
-      src: "https://images.unsplash.com/photo-1672999997109-cdb98eb957e6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
-      name: "Sản phẩm A",
-      price: "1.900.000",
-    },
-  ];
-  // const carouselInterval = setInterval(() => {
-  //   const nextIndex = currentFlatlistItem + 1;
-  //   setCurrentFlatlistItem(nextIndex);
-  //   flatlistRef.current.scrollToIndex({ index, animated: true });
-  // }, 4000);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    // carouselInterval();
+    // dispatch(getTopSixProductsPromotionActions());
+    // dispatch(getTopSixSellingProductsActions());
+    // dispatch(getTopSixNewProductsActions());
+    // dispatch(getListProductsContentActions());
   }, []);
+  // console.log("dataTopSixSellingProducts", dataTopSixSellingProducts);
+  // console.log("dataTopSixNewProducts", dataTopSixNewProducts);
+
   const renderItem = ({ item }) => {
     return (
       <View key={item?.id} style={{ width: sliderWidth, height: 200 }}>
         <Image
-          source={{ uri: item?.src }}
-          style={{ width: "100%", aspectRatio: 1 }}
+          source={{ uri: item?.avatar }}
+          style={{ width: "100%", height: "70%" }}
+          resizeMode="contain"
         />
       </View>
     );
@@ -82,14 +88,14 @@ export default function Home() {
                 }
               }}
               showsHorizontalScrollIndicator={false}
-              data={carouselData}
+              data={dataTopSixNewProducts}
               renderItem={renderItem}
               horizontal
             ></FlatList>
           </View>
 
           <View style={styles.bodyWrapper}>
-            <View style={[styles.mainProductWrapper, { marginBottom: 10 }]}>
+            {/* <View style={[styles.mainProductWrapper, { marginBottom: 10 }]}>
               <View style={[styles.col, { flex: 0.4 }]}>
                 <View style={[styles.row60]}>
                   <Image
@@ -139,14 +145,17 @@ export default function Home() {
                   />
                 </View>
               </View>
-            </View>
-            <CategoryProducts listData={carouselData} />
+            </View> */}
             <CategoryProducts
-              listData={carouselData}
+              title={"Sản phẩm bán chạy"}
+              listData={dataTopSixSellingProducts}
+            />
+            <CategoryProducts
+              // listData={dataTopSixProductsPromotion}
               title={"Sản phẩm khuyến mãi"}
             />
             <CategoryProducts
-              listData={carouselData}
+              listData={dataTopSixNewProducts}
               title={"Sản phẩm mới"}
               style={{ marginBottom: 50 }}
             />

@@ -29,14 +29,14 @@ export default function YourCart() {
       name: "KeyCap",
       isChecked: false,
     },
-    {
-      id: 2,
-      price: 5000,
-      quantity: 1,
-      url: "https://images.unsplash.com/photo-1674082540761-440dc1b2326b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
-      name: "Con ghệ miền Tây",
-      isChecked: false,
-    },
+    // {
+    //   id: 2,
+    //   price: 5000,
+    //   quantity: 1,
+    //   url: "https://images.unsplash.com/photo-1674082540761-440dc1b2326b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
+    //   name: "Con ghệ miền Tây",
+    //   isChecked: false,
+    // },
   ]);
   const handleCheckBoxPress = (item) => {
     const index = productList.findIndex((object) => object.id === item.id);
@@ -82,8 +82,8 @@ export default function YourCart() {
     setProductList([...newArray]);
   };
   const handlePurchasePress = () => {
-    navigation.navigate('Booking')
-  }
+    navigation.navigate("Booking");
+  };
   return (
     <View style={styles.mainWrapper}>
       <ScrollView style={{ height: "100%", flex: 1 }}>

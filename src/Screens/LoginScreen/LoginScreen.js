@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React from "react";
@@ -11,13 +12,67 @@ import image from "../../assets/images/background/LoginBg.png";
 import { useForm } from "react-hook-form";
 import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
+// import { useDispatch } from "react-redux";
+// import { signIn } from "../../Store/Auth/actions";
+// import useFetch from '../../Store/useFetch';
+import { signIn } from "../../Store/Auth/service";
+import validationSchema from "./validation";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Provider, useDispatch } from "react-redux";
+import Input from "../../Components/Input";
+import { getProfileUser, loginActions } from "../../Store/Auth/actions";
+import { login } from "../../Store/Auth/service";
+import { showAlert } from "../../Store/alert/actions";
+import { RETCODE_SUCCESS, SUCCESS } from "../../config/constants";
 export default function LoginScreen(props) {
-  // const form = useForm({
-  //   resolver: yupResolver(validationSchema(i18n)),
-  //   mode: "all",
-  // });
+  const form = useForm({
+    resolver: yupResolver(validationSchema()),
+    mode: "all",
+  });
   const { navigation } = props;
+  const dispatch = useDispatch();
+
+  const onSubmit = async () => {
+    dispatch(
+      loginActions({
+        userName: form.getValues("username"),
+        passWord: form.getValues("password"),
+      })
+    );
+    try {
+      const res = await login({
+        userName: form.getValues("username"),
+        passWord: form.getValues("password"),
+      });
+
+      if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
+        // const dataUser = res.data;
+        // dispatch(
+        //   getProfileUser({
+        //     dataUser,
+        //   })
+        // );
+        dispatch(
+          showAlert({
+            type: "success",
+            message: res.data.retText,
+          })
+        );
+        navigation.navigate("Home");
+      } else {
+        dispatch(
+          showAlert({
+            type: "error",
+            message: res.data.retText,
+          })
+        );
+      }
+    } catch (error) {
+      console.log("error", error);
+    } finally {
+    }
+  };
+
   return (
     <KeyboardAwareScrollView
       contentContainerStyle={{
@@ -41,25 +96,34 @@ export default function LoginScreen(props) {
             <Text style={styles.loginNote}>Vui lòng đăng nhập để tiếp tục</Text>
           </View>
           <View style={styles.loginFormWrapper}>
-            <TextInput
-              style={styles.loginInput}
+            <Input
+              name="username"
+              containerStyle={styles.loginInput}
               placeholder={"Tên đăng nhập"}
+              height={20}
+              required
               placeholderTextColor="white"
+              {...form}
             />
-            <TextInput
-              style={styles.loginInput}
+            <Input
+              name="password"
+              containerStyle={styles.loginInput}
               placeholder={"Mật khẩu"}
+              isPassword={true}
+              height={20}
+              required
               placeholderTextColor="white"
-              secureTextEntry={true}
+              {...form}
             />
           </View>
           <View style={styles.loginFooter}>
             <View style={styles.loginFooterPart}>
-              <Pressable
+              <TouchableOpacity
                 style={styles.loginButton}
-                onPress={() => {
-                  navigation.navigate("Home");
-                }}
+                onPress={onSubmit}
+                // onPress={() => {
+                //   navigation.navigate("Home");
+                // }}
               >
                 <Text
                   style={{
@@ -72,7 +136,7 @@ export default function LoginScreen(props) {
                 >
                   ĐĂNG NHẬP
                 </Text>
-              </Pressable>
+              </TouchableOpacity>
             </View>
             <View style={styles.loginFooterPart}>
               <Text style={styles.loginSignUpText}>
@@ -87,12 +151,15 @@ export default function LoginScreen(props) {
                 <Text style={styles.signUpText}>Đăng ký ngay</Text>
               </Pressable>
             </View>
-            <View style={styles.loginFooterPart}>
+            {/* <View style={styles.loginFooterPart}>
               <Text style={styles.loginSignUpText}>Quên mật khẩu? </Text>
-              <Pressable style={styles.loginSignUpLink}>
+              <Pressable style={styles.loginSignUpLink}
+              onPress={() => {
+                  navigation.navigate("");
+                }}>
                 <Text style={styles.signUpText}>Nhấp vào đây</Text>
               </Pressable>
-            </View>
+            </View> */}
           </View>
         </View>
       </View>

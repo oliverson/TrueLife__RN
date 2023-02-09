@@ -61,7 +61,7 @@ function Navigator() {
       <Stack.Screen
         name={ROUTES.PRODUCT_DETAIL}
         component={ProductDetail}
-        options={({ item }) => ({ title: item.name })}
+        options={(route) => ({ title: "Chi tiết" })}
       />
       <Stack.Screen
         name={ROUTES.SELECT_SERVICE}

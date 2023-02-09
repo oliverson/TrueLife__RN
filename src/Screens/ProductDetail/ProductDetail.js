@@ -228,6 +228,21 @@ export default function ProductDetail() {
                 containerStyle={{ width: "70%" }}
               />
             </View>
+            <TouchableOpacity
+              style={{
+                width: 200,
+                height: 40,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#fb7088',
+                borderRadius: 8,
+                marginVertical: 20,
+                alignSelf: 'center'
+              }}>
+              <Text style={{
+                color: '#FFF'
+              }}>Thêm vào giỏ hàng</Text>
+            </TouchableOpacity>
           </View>
           <View style={[styles.productNameWrapper, { padding: 0 }]}>
             <View
@@ -251,6 +266,7 @@ export default function ProductDetail() {
                     borderBottomColor: "#d9d9d9",
                     borderBottomWidth: 1,
                     width: "100%",
+
                   },
                 ]}
               >
