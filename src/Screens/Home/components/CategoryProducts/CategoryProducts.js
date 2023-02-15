@@ -4,6 +4,7 @@ import styles from "./styles";
 import { getSixNewProducts, getTopSixNewProducts } from "../../../../Store/Production/service";
 import { RETCODE_SUCCESS, SUCCESS } from "../../../../config/constants";
 import { useNavigation } from "@react-navigation/native";
+import EmptyList from "../../../../Components/EmptyList";
 
 export default function CategoryProducts({
   listData,
@@ -57,6 +58,9 @@ export default function CategoryProducts({
             data={listData}
             renderItem={carouselProductItem}
             horizontal
+            ListEmptyComponent={()=>{
+              return <EmptyList/>
+            }}
           ></FlatList>
         </View>
       </View>

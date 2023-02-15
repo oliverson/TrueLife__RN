@@ -14,75 +14,32 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { LocationIcon } from "../../assets/svg";
 import CheckBox from "../../Components/CheckBox/CheckBox";
+import { getCardDataSelector } from "../../Store/Production/selectors";
+import { useSelector } from "react-redux";
+import { moneyFormat } from "../../Utils/currency";
 
 export default function Product() {
   const [currentItem, setCurrentItem] = useState({ id: 0, name: "Son Môi" });
   const navigation = useNavigation();
+  const cartData = useSelector(getCardDataSelector).filter((e) => e.isChecked);
+
   const [personalInfo, setPersonalInfo] = useState({
     name: "Phan Thuan",
     phone: "0909319641",
     address: "B386/15, kp3, DHT, Q12",
   });
-  const [productList, setProductList] = useState([
-    {
-      id: "001",
-      quantity: 2,
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "002",
-      quantity: 2,
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "003",
-      quantity: 2,
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "004",
-      quantity: 2,
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "005",
-      quantity: 2,
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "006",
-      quantity: 2,
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "007",
-      quantity: 2,
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-  ]);
 
   const ProductItem = (item) => (
     <View style={styles.productItemWrapper}>
       <View style={styles.imageWrapper}>
-        <Image style={styles.productImage} source={{ uri: item?.img }} />
+        <Image
+          style={styles.productImage}
+          source={{ uri: item?.listImage?.[0] }}
+        />
       </View>
       <View style={styles.productItemDescWrapper}>
         <Text numberOfLines={2} style={{ fontSize: 16 }}>
-          {item?.name}
+          {item?.productName}
         </Text>
         <View
           style={{
@@ -91,9 +48,14 @@ export default function Product() {
             justifyContent: "space-between",
           }}
         >
-          <Text style={{ fontSize: 15, color: "#999999" }}>{item?.price}</Text>
           <Text style={{ fontSize: 15, color: "#999999" }}>
-            x{item?.quantity}
+            {moneyFormat({
+              money: item.price,
+              currency: "đ",
+            })}
+          </Text>
+          <Text style={{ fontSize: 15, color: "#999999" }}>
+            x{item?.quantities}
           </Text>
         </View>
       </View>
@@ -118,7 +80,7 @@ export default function Product() {
           </View>
           <View style={styles.bookingArticle}>
             <Text style={styles.addressTitle}>Danh sách sản phẩm</Text>
-            <View>{productList.map((item) => ProductItem(item))}</View>
+            <View>{cartData.map((item) => ProductItem(item))}</View>
           </View>
           <View style={styles.bookingArticle}>
             <Text
@@ -152,7 +114,9 @@ export default function Product() {
                 }}
               >
                 <Text style={{ fontSize: 16 }}>Chọn dịch vụ quà tặng</Text>
-                <CheckBox onClick={() => navigation.navigate("ServiceSelect")}/>
+                <CheckBox
+                  onClick={() => navigation.navigate("ServiceSelect")}
+                />
               </View>
               <View
                 style={{
@@ -175,30 +139,37 @@ export default function Product() {
               </View>
             </View>
           </View>
-          <View style={[styles.bookingArticle, {padding: 16}]}>
+          <View style={[styles.bookingArticle, { padding: 16 }]}>
             <View style={styles.receiptInfoWrapper}>
-                <Text style={styles.receiptInfoText}>Số lượng:</Text>
-                <Text style={styles.receiptInfoText}>4</Text>
+              <Text style={styles.receiptInfoText}>Số lượng:</Text>
+              <Text style={styles.receiptInfoText}>4</Text>
             </View>
             <View style={styles.receiptInfoWrapper}>
-                <Text style={styles.receiptInfoText}>Tạm tính:</Text>
-                <Text style={styles.receiptInfoText}>5.250.000đ</Text>
+              <Text style={styles.receiptInfoText}>Tạm tính:</Text>
+              <Text style={styles.receiptInfoText}>5.250.000đ</Text>
             </View>
             <View style={styles.receiptInfoWrapper}>
-                <Text style={styles.receiptInfoText}>Phí vận chuyển:</Text>
-                <Text style={styles.receiptInfoText}>25.000đ</Text>
+              <Text style={styles.receiptInfoText}>Phí vận chuyển:</Text>
+              <Text style={styles.receiptInfoText}>25.000đ</Text>
             </View>
             <View style={styles.receiptInfoWrapper}>
-                <Text style={styles.receiptInfoText}>Phí dịch vụ:</Text>
-                <Text style={styles.receiptInfoText}>0đ</Text>
+              <Text style={styles.receiptInfoText}>Phí dịch vụ:</Text>
+              <Text style={styles.receiptInfoText}>0đ</Text>
             </View>
             <View style={styles.receiptInfoWrapper}>
-                <Text style={styles.receiptInfoText}>Giảm:</Text>
-                <Text style={styles.receiptInfoText}>0đ</Text>
+              <Text style={styles.receiptInfoText}>Giảm:</Text>
+              <Text style={styles.receiptInfoText}>0đ</Text>
             </View>
             <View style={styles.receiptInfoWrapper}>
-                <Text style={styles.receiptInfoText}>Thành tiền:</Text>
-                <Text style={[styles.receiptInfoText, {color: '#fb7088', fontWeight: 'bold'}]}>5.275.000đ</Text>
+              <Text style={styles.receiptInfoText}>Thành tiền:</Text>
+              <Text
+                style={[
+                  styles.receiptInfoText,
+                  { color: "#fb7088", fontWeight: "bold" },
+                ]}
+              >
+                5.275.000đ
+              </Text>
             </View>
           </View>
         </View>

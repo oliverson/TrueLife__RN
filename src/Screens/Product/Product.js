@@ -1,4 +1,6 @@
 import {
+  ActivityIndicator,
+  FlatList,
   Image,
   StyleSheet,
   Text,
@@ -23,19 +25,19 @@ import {
   getListProductsFlitter,
 } from "../../Store/Production/actions";
 import {
+  isLoadingListProductFilterSelector,
   listProductFilterSelector,
   productListProductContentDataSelector,
 } from "../../Store/Production/selectors";
+import EmptyList from "../../Components/EmptyList";
 
 export default function Product() {
-  const [currentItem, setCurrentItem] = useState({ id: 0, name: "Son Môi" });
+  const [currentItem, setCurrentItem] = useState(null);
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
   const handleItemChoose = (item) => {
     setCurrentItem(item);
-    console.log(item);
-    fetchListProduct(item?.typeProductName, item?.typeProductId);
   };
 
   const dispatch = useDispatch();
@@ -43,7 +45,7 @@ export default function Product() {
     dispatch(getListProductsContentActions({}));
   };
   const handleProductPress = (item) => {
-    navigation.navigate("ProductDetail");
+    navigation.navigate("ProductDetail", { data: item });
   };
 
   const fetchListProduct = (productName, productTypeId) => {
@@ -54,13 +56,21 @@ export default function Product() {
       })
     );
   };
+  React.useEffect(() => {
+    fetchListProduct(currentItem?.typeProductName, currentItem?.typeProductId);
+  }, [currentItem?.typeProductId]);
 
   useEffect(() => {
     handleGetListDataProducts();
   }, []);
+
+  React.useEffect(() => {
+    setCurrentItem(dataListProducts?.[0]?.listTypeProductUsers?.[0] || null);
+  }, [dataListProducts]);
+
   const dataListProducts = useSelector(productListProductContentDataSelector);
   const listDataProduct = useSelector(listProductFilterSelector);
-  console.log("listDataProduct", listDataProduct);
+  const isLoadingList = useSelector(isLoadingListProductFilterSelector);
   return (
     <View style={styles.mainWrapper}>
       <View style={{ flex: 1, flexDirection: "row" }}>
@@ -72,7 +82,7 @@ export default function Product() {
               alignItems: "center",
             }}
           >
-            {dataListProducts.map((item) => (
+            {dataListProducts?.map((item) => (
               <View style={styles.categoryContainer} key={item?.id}>
                 <View style={styles.titleCategory}>
                   <Text style={styles.titleCategoryText}>
@@ -80,7 +90,7 @@ export default function Product() {
                   </Text>
                 </View>
                 <View style={styles.categoryListWrapper}>
-                  {item?.listTypeProductUsers.map((categoryItem) => (
+                  {item?.listTypeProductUsers?.map((categoryItem) => (
                     <TouchableOpacity
                       key={categoryItem?.typeProductId}
                       style={[
@@ -109,36 +119,45 @@ export default function Product() {
               {currentItem?.typeProductName}
             </Text>
           </View>
-          <ScrollView
-            style={styles.productList}
-            contentContainerStyle={{
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {listDataProduct !== null ? (
-              listDataProduct?.map((item) => (
-                <TouchableOpacity
-                  key={item?.id}
-                  style={styles.productItemWrapper}
-                  onPress={handleProductPress}
-                >
-                  <View style={styles.productImageWrapper}>
-                    <Image
-                      style={styles.productImage}
-                      source={{ uri: item?.avatar }}
-                    />
-                  </View>
-                  <Text style={styles.productItemText}>
-                    {item?.productName}
-                  </Text>
-                  <Text style={styles.productItemPrice}>{item?.price}</Text>
-                </TouchableOpacity>
-              ))
-            ) : (
-              <View>{"Trống"}</View>
-            )}
-          </ScrollView>
+
+          {isLoadingList ? (
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <ActivityIndicator size={"large"} />
+            </View>
+          ) : (
+            <FlatList
+              data={listDataProduct}
+              contentContainerStyle={{
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              ListEmptyComponent={() => {
+                return <EmptyList />;
+              }}
+              renderItem={({ item }) => {
+                return (
+                  <TouchableOpacity
+                    key={item?.id}
+                    style={styles.productItemWrapper}
+                    onPress={() => {
+                      handleProductPress(item);
+                    }}
+                  >
+                    <View style={styles.productImageWrapper}>
+                      <Image
+                        style={styles.productImage}
+                        source={{ uri: item?.avatar }}
+                      />
+                    </View>
+                    <Text style={styles.productItemText}>
+                      {item?.productName}
+                    </Text>
+                    <Text style={styles.productItemPrice}>{item?.price}</Text>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          )}
         </View>
       </View>
 

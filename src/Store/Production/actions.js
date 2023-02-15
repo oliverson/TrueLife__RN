@@ -38,3 +38,31 @@ export function getDeatilsProduct(payload) {
     payload,
   };
 }
+
+export function addToCart(payload) {
+  return {
+    type: Actions.ADD_TO_CART,
+    payload,
+  };
+}
+
+export function deleteItemOnCart(payload) {
+  return {
+    type: Actions.DELETE_ITEM_ON_CART,
+    payload,
+  };
+}
+
+export function changeQuantitiesItemOnCart(payload) {
+  return {
+    type: Actions.CHANGE_QUANTITIES,
+    payload,
+  };
+}
+
+export function setCheckedItemOnCart(payload) {
+  return {
+    type: Actions.SET_CHECKED_ITEM,
+    payload,
+  };
+}

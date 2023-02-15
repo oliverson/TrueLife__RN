@@ -25,6 +25,7 @@ import {
   productSixProductPromotionDataSelector,
   productSixSellingProductDataSelector,
 } from "../../Store/Production/selectors";
+import EmptyList from "../../Components/EmptyList";
 
 export default function Home() {
   const [sliderWidth, setSliderWidth] = useState(200);
@@ -45,9 +46,9 @@ export default function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // dispatch(getTopSixProductsPromotionActions());
-    // dispatch(getTopSixSellingProductsActions());
-    // dispatch(getTopSixNewProductsActions());
+    dispatch(getTopSixProductsPromotionActions());
+    dispatch(getTopSixSellingProductsActions());
+    dispatch(getTopSixNewProductsActions());
     // dispatch(getListProductsContentActions());
   }, []);
   // console.log("dataTopSixSellingProducts", dataTopSixSellingProducts);
@@ -86,6 +87,9 @@ export default function Home() {
                   });
                   setCurrentFlatlistIndex(index);
                 }
+              }}
+              ListEmptyComponent={()=>{
+                return <EmptyList/>
               }}
               showsHorizontalScrollIndicator={false}
               data={dataTopSixNewProducts}

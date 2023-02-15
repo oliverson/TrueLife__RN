@@ -7,7 +7,9 @@ const initState = {
   productListProductContentData: null,
   productSixNewProductData: null,
   productSixSellingProductData: null,
-  listProductFilter: null,
+  listProductFilter: [],
+  cartData: [],
+  isLoadingListProductFilter: false,
   productDetails: null,
 };
 const ProductionsData = (state = initState, action = {}) => {
@@ -48,6 +50,76 @@ const ProductionsData = (state = initState, action = {}) => {
         productDetails: [...action.payload],
       };
     }
+    case Actions.SET_LOADING_LIST_PRODUCTS_FILLTER: {
+      return {
+        ...state,
+        isLoadingListProductFilter: action?.payload,
+      };
+    }
+    case Actions.ADD_TO_CART: {
+      // return {
+      //   ...state,
+      //   cartData: [
+        
+      //   ],
+      // };
+      const index = state?.cartData
+        ?.map((e) => e.productId)
+        ?.indexOf(action.payload?.productId);
+      if (!index && index !== -1) {
+        return {
+          ...state,
+          cartData: [
+            ...state?.cartData.filter(e=>e.productId !== action.payload?.productId),
+            {
+              ...action.payload,
+              quantities: state?.cartData?.[index]?.quantities + 1,
+            },
+          ],
+        };
+      } else
+        return {
+          ...state,
+          cartData: [
+            ...state?.cartData ,
+            {
+              ...action.payload,
+              quantities: 1,
+            },
+          ],
+        };
+    }
+    case Actions.DELETE_ITEM_ON_CART: {
+        return {
+          ...state,
+          cartData: [
+            ...state?.cartData.filter(e=>e.productId !== action.payload?.productId),
+          ],
+        };
+      
+    }
+    case Actions.CHANGE_QUANTITIES: {
+        return {
+          ...state,
+          cartData: [
+            ...state?.cartData.filter(e=>e.productId !== action.payload?.productId),
+            {
+              ...action.payload,
+            },
+          ],
+        };
+    }
+    case Actions.SET_CHECKED_ITEM: {
+        return {
+          ...state,
+          cartData: [
+            ...state?.cartData.filter(e=>e.productId !== action.payload?.productId),
+            {
+              ...action.payload,
+            },
+          ],
+        };
+    }
 
     default:
       return state;
@@ -56,22 +128,6 @@ const ProductionsData = (state = initState, action = {}) => {
 const persistConfig = {
   key: "product",
   storage: AsyncStorage,
-  blackList: [
-    // 'accessToken',
-    // 'userData',
-    // 'profileData',
-    // 'userSignUp',
-    // 'signInSuccess',
-    // 'signUpSuccess',
-    // 'updateInfoStudentSuccess',
-    // 'updateInfoParentSuccess',
-    // 'signInError',
-    // 'signUpError',
-    // 'updateInfoStudentError',
-    // 'updateInfoParentError',
-    // 'updateAvatarLoading',
-    // 'buyCourse',
-  ],
   // blacklist: ['isLoading'],
 };
 

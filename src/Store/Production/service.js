@@ -21,8 +21,8 @@ export const getListProductsFillter = (payload) => {
   return apiMethod.post(API.POST_SHOW_LIST_PRODUCT_FILTER, payload);
 };
 
-export const getProductDetails = (payload) => {
-  return apiMethod.post(API.POST_PRODUCT_DETAIL, payload);
+export const getProductDetails = (id) => {
+  return apiMethod.post(`${API.POST_PRODUCT_DETAIL}?id=${id}`);
 };
 
 export const addProductToCart = (payload) => {

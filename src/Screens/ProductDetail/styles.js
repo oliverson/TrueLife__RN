@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 10,
     flexDirection: "row",
-    backgroundColor: "white",
   },
   productSubImage: {
     aspectRatio: 1,
@@ -109,12 +108,12 @@ const styles = StyleSheet.create({
     height: 250,
   },
   relevantProductItem: {
+    padding: 12,
     marginHorizontal: 10,
     height: "100%",
     aspectRatio: 1,
     backgroundColor: "white",
     borderRadius: 8,
-    paddingBottom: 5,
   },
   relevantProductItemImage: {
     height: "75%",

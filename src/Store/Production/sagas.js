@@ -20,7 +20,6 @@ function* getTopSixProductsPromotionMethod({ payload }) {
     const res = yield call(getTopSixProductsPromotion, {
       ...payload,
     });
-    console.log("RESgetTopSixProductsPromotionMethod", res.data);
     if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
       // console.log(
       //   'RESSsssdddsssss',
@@ -34,7 +33,6 @@ function* getTopSixProductsPromotionMethod({ payload }) {
         type: Actions.GET_TOP_SIX_PRODUCTS_PROMOTION_SUCCESS,
         payload: res?.data?.data?.listData || "",
       });
-      console.log("GET DATAOK");
       // navigate(Auth.AuthStack.screens.SignIn_SignUp.name);
     } else {
       console.log("SAI GI DO");
@@ -50,7 +48,6 @@ function* getTopSixNewProductsMethod({ payload }) {
     const res = yield call(getTopSixNewProducts, {
       ...payload,
     });
-    console.log("RESgetTopSixNewProductsMethod", res.data);
     if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
       // console.log(
       //   'RESSsssdddsssss',
@@ -64,7 +61,6 @@ function* getTopSixNewProductsMethod({ payload }) {
         type: Actions.GET_TOP_SIX_NEW_PRODUCTS_SUCCESS,
         payload: res?.data?.data?.listData,
       });
-      console.log("GET DATAOK");
       // navigate(Auth.AuthStack.screens.SignIn_SignUp.name);
     } else {
       console.log("SAI GI DO");
@@ -90,7 +86,6 @@ function* getTopSixSellingProductsMethod({ payload }) {
         type: Actions.GET_TOP_SIX_SELLING_PRODUCTS_SUCCESS,
         payload: res?.data?.data?.listData,
       });
-      console.log("GET DATAOK");
       // navigate(Auth.AuthStack.screens.SignIn_SignUp.name);
     } else {
       console.log("SAI GI DO");
@@ -106,21 +101,11 @@ function* getListProductsContentMethod({ payload }) {
     const res = yield call(getListProductsContent, {
       ...payload,
     });
-    console.log("RESgetListProductsContentMethod", res.data);
     if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
-      // console.log(
-      //   'RESSsssdddsssss',
-      //   JSON.stringify(res.data?.data?.listData, null, 4),
-      // );
-      // yield put({
-      //   type: ActionAlert.SHOW_ALERT,
-      //   payload: res?.data?.retText,
-      // });
       yield put({
         type: Actions.GET_LIST_PRODUCTS_CONTENT_SUCCESS,
         payload: res?.data?.data,
       });
-      console.log("GET DATAOK");
       // navigate(Auth.AuthStack.screens.SignIn_SignUp.name);
     } else {
       console.log("SAI GI DO");
@@ -132,12 +117,14 @@ function* getListProductsContentMethod({ payload }) {
 }
 
 function* getListProductsFillterMethod({ payload }) {
+  yield put({
+    type: Actions.SET_LOADING_LIST_PRODUCTS_FILLTER,
+    payload: true,
+  });
   try {
-    // const dispatch = useDispatch();
     const res = yield call(getListProductsFillter, {
       ...payload,
     });
-    console.log("getListProductsFillterMethod", res.data);
     if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
       yield put({
         type: Actions.SET_LIST_PRODUCTS_FILLTER,
@@ -149,6 +136,10 @@ function* getListProductsFillterMethod({ payload }) {
   } catch (e) {
     console.log("LOGIN_FAILED", e);
   } finally {
+    yield put({
+      type: Actions.SET_LOADING_LIST_PRODUCTS_FILLTER,
+      payload: false,
+    });
   }
 }
 

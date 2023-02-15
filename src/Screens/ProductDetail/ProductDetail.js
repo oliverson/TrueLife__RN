@@ -1,102 +1,58 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ActivityIndicator,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useState } from "react";
 import styles from "./styles";
 import NavBarBottom from "../../Components/NavBarBottom/NavBarBottom";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import NumberInput from "../../Components/NumberInput/NumberInput";
-
+import { getProductDetails } from "../../Store/Production/service";
+import { moneyFormat } from "../../Utils/currency";
+import { addToCart } from "../../Store/Production/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { getCardDataSelector } from "../../Store/Production/selectors";
 export default function ProductDetail() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const route = useRoute();
   const [currentQuantity, setCurrentQuantity] = useState(1);
-  const [activeImage, setActiveImage] = useState({
-    id: 0,
-    uri: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-  });
-  const [activeKind, setActiveKind] = useState({
-    id: 0,
-    name: "Hương Phong Lan",
-  });
-  const array = [
-    {
-      id: 0,
-      uri: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: 1,
-      uri: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: 2,
-      uri: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: 3,
-      uri: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: 4,
-      uri: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-  ];
-  const kindArray = [
-    { id: 0, name: "Hương Phong Lan" },
-    { id: 1, name: "Hương Vani" },
-    { id: 2, name: "Nho Đen Hy Lạp" },
-    { id: 3, name: "Hương Clementine" },
-  ];
-  const listProduct = [
-    {
-      id: "001",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "002",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "003",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "004",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "005",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "006",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "007",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-  ];
+  const [currentId, setCurrentId] = useState(route?.params?.data?.productId);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [activeImage, setActiveImage] = useState();
+  const fetchDetails = async () => {
+    setLoading(true);
+    try {
+      const res = await getProductDetails(currentId);
+      setData(res.data.data);
+    } catch (e) {
+      console.log("error", e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchDetails();
+  }, [currentId]);
+
+  React.useEffect(() => {
+    setActiveImage(data?.listImage?.[0]);
+  }, [data]);
   const handleSubImagePress = (item) => {
     setActiveImage(item);
   };
-  const handleKindItemPress = (item) => {
-    setActiveKind(item);
-  };
-  return (
+  const handleKindItemPress = () => {};
+  return loading ? (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <ActivityIndicator size={"large"} />
+    </View>
+  ) : (
     <View style={styles.mainWrapper}>
       <ScrollView>
         <View style={styles.productDetailWrapper}>
@@ -105,7 +61,7 @@ export default function ProductDetail() {
               style={styles.productMainImage}
               resizeMode="contain"
               source={{
-                uri: activeImage?.uri,
+                uri: activeImage,
               }}
             />
             <View style={{ width: "100%", height: 100, position: "relative" }}>
@@ -113,16 +69,16 @@ export default function ProductDetail() {
                 style={[styles.productSubImageWrapper]}
                 horizontal={true}
               >
-                {array?.map((item) => (
+                {data?.listImage?.map((item) => (
                   <TouchableOpacity
                     style={[
                       styles.productSubImage,
-                      { opacity: item?.id === activeImage?.id ? 0.5 : 1 },
+                      { opacity: item === activeImage ? 0.5 : 1 },
                     ]}
-                    key={item?.id}
+                    key={item}
                     onPress={() => handleSubImagePress(item)}
                   >
-                    <Image style={{ flex: 1 }} source={{ uri: item?.uri }} />
+                    <Image style={{ flex: 1 }} source={{ uri: item }} />
                   </TouchableOpacity>
                 ))}
               </ScrollView>
@@ -131,7 +87,7 @@ export default function ProductDetail() {
           <View style={styles.productNameWrapper}>
             <View style={styles.productName}>
               <Text style={styles.productNameText} numberOfLines={2}>
-                CHANEL COCO MADEMOISELLE
+                {data?.productName}
               </Text>
             </View>
             <View style={styles.productPriceWrapper}>
@@ -144,12 +100,18 @@ export default function ProductDetail() {
               >
                 <Text style={styles.productPriceTitle}>Giá bán:</Text>
                 <Text style={styles.productPriceDiscountedText}>
-                  2.800.000đ
+                  {moneyFormat({
+                    money: data?.priceDiscount,
+                  })}
                 </Text>
               </View>
               <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
                 <Text style={styles.productPriceTitle}>Giá gốc:</Text>
-                <Text style={styles.productPriceOriginalText}>2.450.000đ</Text>
+                <Text style={styles.productPriceOriginalText}>
+                  {moneyFormat({
+                    money: data?.price,
+                  })}
+                </Text>
               </View>
             </View>
             <View
@@ -166,7 +128,7 @@ export default function ProductDetail() {
                   { color: "#000", textDecorationLine: "none" },
                 ]}
               >
-                Dior
+                {data?.trademark}
               </Text>
             </View>
             <View style={{ flexDirection: "row", alignItems: "flex-end" }}>
@@ -177,7 +139,7 @@ export default function ProductDetail() {
                   { color: "#000", textDecorationLine: "none" },
                 ]}
               >
-                Còn hàng
+                {data?.statusProduct}
               </Text>
             </View>
           </View>
@@ -191,27 +153,12 @@ export default function ProductDetail() {
             >
               <Text style={styles.productPriceTitle}>Loại:</Text>
               <View style={styles.productKindsWrapper}>
-                {kindArray.map((item) => (
-                  <TouchableOpacity
-                    style={
-                      item?.id === activeKind?.id
-                        ? styles.kindActiveItem
-                        : styles.kindItem
-                    }
-                    onPress={() => handleKindItemPress(item)}
-                  >
-                    <Text
-                      style={[
-                        styles?.kindItemName,
-                        {
-                          color: item?.id === activeKind?.id ? "white" : "#000",
-                        },
-                      ]}
-                    >
-                      {item?.name}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
+                <TouchableOpacity
+                  style={styles.kindActiveItem}
+                  onPress={() => handleKindItemPress()}
+                >
+                  <Text style={[styles?.kindItemName]}>{data?.natureName}</Text>
+                </TouchableOpacity>
               </View>
             </View>
             <View
@@ -229,19 +176,28 @@ export default function ProductDetail() {
               />
             </View>
             <TouchableOpacity
+              onPress={() => {
+                dispatch(addToCart(data));
+                // alert("Thêm thành công");
+              }}
               style={{
                 width: 200,
                 height: 40,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#fb7088',
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "#fb7088",
                 borderRadius: 8,
                 marginVertical: 20,
-                alignSelf: 'center'
-              }}>
-              <Text style={{
-                color: '#FFF'
-              }}>Thêm vào giỏ hàng</Text>
+                alignSelf: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: "#FFF",
+                }}
+              >
+                Thêm vào giỏ hàng
+              </Text>
             </TouchableOpacity>
           </View>
           <View style={[styles.productNameWrapper, { padding: 0 }]}>
@@ -266,14 +222,13 @@ export default function ProductDetail() {
                     borderBottomColor: "#d9d9d9",
                     borderBottomWidth: 1,
                     width: "100%",
-
                   },
                 ]}
               >
                 Mô tả
               </Text>
               <Text style={{ color: "#999999", fontSize: 18, padding: 10 }}>
-                This is description
+                {data?.describe}
               </Text>
             </View>
           </View>
@@ -281,11 +236,16 @@ export default function ProductDetail() {
             <Text style={styles.productRelevantText}>Sản phẩm liên quan</Text>
             <ScrollView style={styles.productRelevantScroll} horizontal={true}>
               <View style={styles.productRelevantWrapper}>
-                {listProduct?.map((item) => (
-                  <View style={styles.relevantProductItem}>
+                {data?.listProductRelateTo?.map((item) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setCurrentId(item.productId);
+                    }}
+                    style={styles.relevantProductItem}
+                  >
                     <Image
                       style={styles.relevantProductItemImage}
-                      source={{ uri: item?.img }}
+                      source={{ uri: item?.avatar }}
                     />
                     <View
                       style={{
@@ -295,7 +255,9 @@ export default function ProductDetail() {
                         alignItems: "center",
                       }}
                     >
-                      <Text style={{ marginBottom: 5 }}>{item?.name}</Text>
+                      <Text style={{ marginBottom: 5 }} numberOfLines={2}>
+                        {item?.productName}
+                      </Text>
                       <Text
                         style={{
                           fontSize: 20,
@@ -303,10 +265,10 @@ export default function ProductDetail() {
                           fontWeight: "bold",
                         }}
                       >
-                        {item?.price}
+                        {moneyFormat({ money: item?.price, currency: "đ" })}
                       </Text>
                     </View>
-                  </View>
+                  </TouchableOpacity>
                 ))}
               </View>
             </ScrollView>
@@ -317,8 +279,4 @@ export default function ProductDetail() {
       <NavBarBottom />
     </View>
   );
-}
-
-{
-  /* */
 }
