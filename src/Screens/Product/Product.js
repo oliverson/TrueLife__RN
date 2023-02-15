@@ -22,56 +22,16 @@ import {
   getListProductsContentActions,
   getListProductsFlitter,
 } from "../../Store/Production/actions";
-import { productListProductContentDataSelector } from "../../Store/Production/selectors";
+import {
+  listProductFilterSelector,
+  productListProductContentDataSelector,
+} from "../../Store/Production/selectors";
 
 export default function Product() {
   const [currentItem, setCurrentItem] = useState({ id: 0, name: "Son Môi" });
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
-  const [listProduct, setListProduct] = useState([
-    {
-      id: "001",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "002",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "003",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "004",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "005",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "006",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-    {
-      id: "007",
-      name: "CHANEL COCO MADEMOISELLE",
-      price: "2.450.000đ",
-      img: "https://images.unsplash.com/photo-1674043701161-9c15f4d8b205?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=776&q=80",
-    },
-  ]);
+
   const handleItemChoose = (item) => {
     setCurrentItem(item);
     console.log(item);
@@ -99,7 +59,8 @@ export default function Product() {
     handleGetListDataProducts();
   }, []);
   const dataListProducts = useSelector(productListProductContentDataSelector);
-
+  const listDataProduct = useSelector(listProductFilterSelector);
+  console.log("listDataProduct", listDataProduct);
   return (
     <View style={styles.mainWrapper}>
       <View style={{ flex: 1, flexDirection: "row" }}>
@@ -155,22 +116,28 @@ export default function Product() {
               alignItems: "center",
             }}
           >
-            {dataListProducts?.map((item) => (
-              <TouchableOpacity
-                key={item?.id}
-                style={styles.productItemWrapper}
-                onPress={handleProductPress}
-              >
-                <View style={styles.productImageWrapper}>
-                  <Image
-                    style={styles.productImage}
-                    source={{ uri: item?.img }}
-                  />
-                </View>
-                <Text style={styles.productItemText}>{item?.name}</Text>
-                <Text style={styles.productItemPrice}>{item?.price}</Text>
-              </TouchableOpacity>
-            ))}
+            {listDataProduct !== null ? (
+              listDataProduct?.map((item) => (
+                <TouchableOpacity
+                  key={item?.id}
+                  style={styles.productItemWrapper}
+                  onPress={handleProductPress}
+                >
+                  <View style={styles.productImageWrapper}>
+                    <Image
+                      style={styles.productImage}
+                      source={{ uri: item?.avatar }}
+                    />
+                  </View>
+                  <Text style={styles.productItemText}>
+                    {item?.productName}
+                  </Text>
+                  <Text style={styles.productItemPrice}>{item?.price}</Text>
+                </TouchableOpacity>
+              ))
+            ) : (
+              <View>{"Trống"}</View>
+            )}
           </ScrollView>
         </View>
       </View>
