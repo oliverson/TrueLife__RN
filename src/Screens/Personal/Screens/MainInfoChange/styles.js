@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     overflow: "hidden",
     marginVertical: 20,
+    borderWidth: 1,
   },
   touchToChange: {
     alignSelf: "stretch",
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FA748F",
     borderRadius: 8,
-    alignSelf: 'center'
+    alignSelf: "center",
   },
 });
 export default styles;

@@ -10,12 +10,18 @@ import {
 import React, { useState } from "react";
 import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
+import { userDataSelector } from "../../../../Store/Auth/selectors";
+import { useSelector } from "react-redux";
 
 export default function Header() {
   const navigation = useNavigation();
+  const profileData = useSelector(userDataSelector);
 
   return (
-    <TouchableOpacity style={styles.headerWrapper} onPress={() => navigation.navigate('MainInfoChange')}>
+    <TouchableOpacity
+      style={styles.headerWrapper}
+      onPress={() => navigation.navigate("MainInfoChange")}
+    >
       <View style={styles.avatarWrapper}>
         <Image
           style={styles.avatarImage}
@@ -26,12 +32,11 @@ export default function Header() {
       </View>
       <View style={styles.descWrapper}>
         <Text numberOfLines={1} style={styles.loginNameText}>
-          PGT1592000
+          {profileData?.userName || ""}
         </Text>
-        <Text style={styles.nameText}>P G T</Text>
-        <View style={{flexDirection: 'row'}}>
-            <Text style={[styles.emailText]}>pgt159@gmail.com</Text>
-            <Text style={[styles.phoneText]}>01234556789</Text>
+        <Text style={styles.fullName}>{profileData?.phone || ""}</Text>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={[styles.emailText]}>{profileData?.email || ""}</Text>
         </View>
       </View>
     </TouchableOpacity>

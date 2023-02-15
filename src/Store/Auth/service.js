@@ -33,6 +33,10 @@ export const updateInforUser = (payload) => {
   return apiMethod.post(API.UPDATE_INFO_USER, payload);
 };
 
+export const updateAddressDeliveryUser = (payload) => {
+  return apiMethod.post(API.UPDATE_ADDRESS_DELIVERY_USER, payload);
+};
+
 export const getListInfoAddressDeliveryUser = (payload) => {
   return apiMethod.post(
     API.LIST_INFOR_ADDRESS_DELIVERY,

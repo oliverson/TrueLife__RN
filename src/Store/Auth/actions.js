@@ -34,3 +34,10 @@ export function getInforDeliveryAddress(payload) {
     payload,
   };
 }
+
+export function updateInforUserActions(payload) {
+  return {
+    type: Actions.UPDATE_USER_INFOR,
+    payload,
+  };
+}

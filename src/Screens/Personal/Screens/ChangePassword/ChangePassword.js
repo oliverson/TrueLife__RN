@@ -13,8 +13,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import NavBarBottom from "../../../../Components/NavBarBottom/NavBarBottom";
 import Input from "../../../../Components/Input";
-import validationSchema from './validation';
-import { yupResolver } from '@hookform/resolvers/yup';
+import validationSchema from "./validation";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { changePassword } from "../../../../Store/Auth/service";
 export default function ChangePassword() {
@@ -23,59 +23,14 @@ export default function ChangePassword() {
     resolver: yupResolver(validationSchema()),
     mode: "all",
   });
-  const [personalInfo, setPersonalInfo] = useState({
-    name: "Phan Thuan",
-    phone: "0909319641",
-    address: "B386/15, kp3, DHT, Q12",
-  });
-  const addressList = [
-    {
-      name: "Phan Thuan",
-      phone: "0909319641",
-      address: "B386/15, kp3, DHT, Q12",
-      isSelected: true,
-    },
-    {
-      name: "Phan Thuan",
-      phone: "0909319641",
-      address: "B386/15, kp3, DHT, Q12",
-      isSelected: false,
-    },
-    {
-      name: "Phan Thuan",
-      phone: "0909319641",
-      address: "B386/15, kp3, DHT, Q12",
-      isSelected: false,
-    },
-  ];
-  const handleChangeAddress = (item) => {
-    navigation.navigate("UpdateAddress", { detail: item });
-  };
 
-  // const onSubmit = async () => {
-
-  //   try {
-  //     const res = await changePassword({
-  //       data: {
-
-  //         "password": form.getValues('password'),
-  //         "confirmPassword": form.getValues('repassword'),
-  //       }
-  //     })
-  //     console.log('RESS', res)
-  //   }
-  //   catch (error) {
-  //     console.log('error');
-  //     console.log(error);
-  //   }
-  // }
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
         <View style={styles.mainWrapper}>
           <View style={styles.formWrapper}>
             <Input
-              name='currentpassword'
+              name="currentpassword"
               containerStyle={styles.inputArticle}
               placeholder={"Mật khẩu hiện tại"}
               height={20}
@@ -85,7 +40,7 @@ export default function ChangePassword() {
             />
 
             <Input
-              name='newpassword'
+              name="newpassword"
               containerStyle={styles.inputArticle}
               placeholder={"Mật khẩu mới"}
               height={20}
@@ -95,7 +50,7 @@ export default function ChangePassword() {
             />
 
             <Input
-              name='renewpassword'
+              name="renewpassword"
               containerStyle={styles.inputArticle}
               placeholder={"Xác nhận mật khẩu"}
               height={20}
@@ -108,7 +63,11 @@ export default function ChangePassword() {
             Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác
           </Text>
           <TouchableOpacity style={styles.confirmBtn}>
-            <Text style={{ fontSize: 18, color: 'white', alignItems: 'center' }}>Xác nhận</Text>
+            <Text
+              style={{ fontSize: 18, color: "white", alignItems: "center" }}
+            >
+              Xác nhận
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

@@ -20,17 +20,13 @@ import { setProfileUser } from "../../Store/Auth/actions";
 
 export default function Personal() {
   const navigation = useNavigation();
-  const [personalInfo, setPersonalInfo] = useState({
-    name: "Phan Thuan",
-    phone: "0909319641",
-    address: "B386/15, kp3, DHT, Q12",
-  });
+
   const profileData = useSelector(userDataSelector);
   const dispacth = useDispatch();
   const logout = () => {
     dispacth(setProfileUser(null));
   };
-  console.log("DATA USER", JSON.stringify(profileData, null, 4));
+
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.mainWrapper}>
@@ -45,15 +41,17 @@ export default function Personal() {
               flex: 1,
             }}
           >
-            <Text style={styles.addressDesc}>{personalInfo.name}</Text>
-            <Text style={styles.addressDesc}>{personalInfo.phone}</Text>
-            <Text style={styles.addressDesc}>{personalInfo.address}</Text>
+            <Text style={styles.addressDesc}>
+              {profileData?.fullName || ""}
+            </Text>
+            <Text style={styles.addressDesc}>{profileData?.phone || ""}</Text>
+            <Text style={styles.addressDesc}>{profileData?.email || ""}</Text>
           </View>
           <View style={{ alignItems: "center", justifyContent: "center" }}>
             <Text style={styles.addressDesc}>Sửa</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={[
             styles.addressWrapper,
             { borderTopColor: "#d9d9d9", borderTopWidth: 1 },
@@ -61,7 +59,7 @@ export default function Personal() {
           onPress={() => navigation.navigate("ChangePassword")}
         >
           <Text style={{ fontSize: 18, color: "#999999" }}>ĐỔI MẬT KHẨU</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity
           style={[
             styles.addressWrapper,

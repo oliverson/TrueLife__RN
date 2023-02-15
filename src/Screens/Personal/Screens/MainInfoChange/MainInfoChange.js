@@ -15,15 +15,26 @@ import NavBarBottom from "../../../../Components/NavBarBottom/NavBarBottom";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userDataSelector } from "../../../../Store/Auth/selectors";
+import { updateInforUserActions } from "../../../../Store/Auth/actions";
+import Input from "../../../../Components/Input";
+import { useForm } from "react-hook-form";
+import validationSchema from "./validation";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect } from "react";
 export default function MainInfoChange() {
   const navigation = useNavigation();
   const [datePicker, setDatePicker] = useState(false);
   const [date, setDate] = useState(new Date());
+  const dispatch = useDispatch();
   const showDatePicker = () => {
     setDatePicker(true);
   };
+  const form = useForm({
+    resolver: yupResolver(validationSchema()),
+    mode: "all",
+  });
   const handleDateChange = (event, selectedDate) => {
     if (event.type === "dismissed") {
       setDatePicker(false);
@@ -33,7 +44,25 @@ export default function MainInfoChange() {
     setDatePicker(false);
   };
   const userData = useSelector(userDataSelector);
-  console.log("userData", userData);
+  const handleUpdate = (values) => {
+    dispatch(
+      updateInforUserActions({
+        // ...userData,
+        userName: values.username,
+        fullName: values.fullname,
+        phone: values.email,
+        email: values.phone,
+      })
+    );
+  };
+  useEffect(() => {
+    if (userData) {
+      form.setValue("username", userData?.userName);
+      form.setValue("fullname", userData?.fullName);
+      form.setValue("email", userData?.email);
+      form.setValue("phone", userData?.phone);
+    }
+  }, [userData]);
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.mainWrapper}>
@@ -42,7 +71,9 @@ export default function MainInfoChange() {
             <Image
               style={{ width: "100%", height: "100%" }}
               source={{
-                uri: "https://images.unsplash.com/photo-1674596346697-166368afebdf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=872&q=80",
+                uri:
+                  userData?.avatar ||
+                  "https://images.unsplash.com/photo-1674596346697-166368afebdf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=872&q=80",
               }}
             />
           </View>
@@ -52,40 +83,52 @@ export default function MainInfoChange() {
             </Text>
           </View>
         </TouchableOpacity>
-        <TextInput
-          style={styles.inputArticle}
+        <Input
+          label={"Tên đăng nhập"}
+          name="username"
+          containerStyle={styles.inputArticle}
           placeholder={userData.userName}
           placeholderTextColor="#B1B1B1"
+          {...form}
         />
-        <TextInput
-          style={styles.inputArticle}
-          placeholder="Họ và tên..."
+        <Input
+          label={"Họ và tên"}
+          name="fullname"
+          containerStyle={styles.inputArticle}
+          placeholder={userData.fullName}
           placeholderTextColor="#B1B1B1"
+          {...form}
         />
-        <TextInput
-          style={styles.inputArticle}
-          placeholder="Email..."
+        <Input
+          label={"Email"}
+          name="email"
+          containerStyle={styles.inputArticle}
+          placeholder={userData.email}
           placeholderTextColor="#B1B1B1"
+          {...form}
         />
-        <TextInput
-          style={styles.inputArticle}
-          placeholder="Số điện thoại..."
+        <Input
+          label={"Số điện thoại"}
+          name="phone"
+          containerStyle={styles.inputArticle}
+          placeholder={userData.phone}
           placeholderTextColor="#B1B1B1"
+          {...form}
         />
 
-        {datePicker && (
+        {/* {datePicker && (
           <RNDateTimePicker value={date} onChange={handleDateChange} />
-        )}
-        <TouchableOpacity
+        )} */}
+        {/* <TouchableOpacity
           style={[styles.inputArticle, { paddingVertical: 15 }]}
           onPress={showDatePicker}
         >
           <Text style={{ fontSize: 15, color: "#B1B1B1" }}>
             {moment(date).format("DD/MM/YYYY")}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <TouchableOpacity style={styles.buttonSave}>
+        <TouchableOpacity style={styles.buttonSave} onPress={handleUpdate}>
           <Text style={{ fontSize: 16, color: "white" }}>Lưu</Text>
         </TouchableOpacity>
       </View>

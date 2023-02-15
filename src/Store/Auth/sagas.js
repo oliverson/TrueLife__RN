@@ -10,6 +10,7 @@ import {
   getListInfoAddressDeliveryUser,
   login,
   signup,
+  updateInforUser,
 } from "./service";
 // import { navigate } from "../../Navigations/rootNavigation";
 // import Auth from "../../config/routes/Auth";
@@ -57,7 +58,8 @@ function* loginMethod({ payload }) {
     console.log("RES", JSON.stringify(res.data, null, 4));
 
     if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
-      console.log("USER ID", res.data?.data.userId);
+      alert("Đăng nhập thành công");
+
       const userId = res.data?.data?.userId;
       yield call(getInforUser, {
         payload: { userId: userId },
@@ -68,23 +70,13 @@ function* loginMethod({ payload }) {
       yield call(getInforDeliveryAddressMethod, {
         payload: { id: userId },
       });
-      // console.log(
-      //   'RESSsssdddsssss',
-      //   JSON.stringify(res.data?.data?.listData, null, 4),
-      // );
-      // yield call(getInforUser,{
-      //   userId :
-      // })
-      // yield put({
-      //   type: Actions.LOGIN_USER_SUCCESS,
-      //   payload: res.data?.data,
-      // });
 
       console.log("DANG nHAP THANH CONG");
       // navigate("Home");
       // navigate(Auth.AuthStack.screens.SignIn_SignUp.name);
     } else {
       console.log("SAI TAI KHOAN HOAC MAT KHAU");
+      alert(res.data.retText);
     }
   } catch (e) {
     console.log("LOGIN_FAILED", e);
@@ -98,18 +90,11 @@ function* signUpMethod({ payload }) {
     const res = yield call(signup, {
       ...payload,
     });
-    console.log("RES", JSON.stringify(res.data, null, 4));
+
     if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
-      // console.log(
-      //   'RESSsssdddsssss',
-      //   JSON.stringify(res.data?.data?.listData, null, 4),
-      // );
-      // yield put({
-      //   type: ActionAlert.SHOW_ALERT,
-      //   payload: res?.data?.retText,
-      // });
+      alert("Đăng kí thành công");
+
       console.log("DANG KY THANH CONG");
-      // navigate(Auth.AuthStack.screens.SignIn_SignUp.name);
     } else {
       console.log("DANG KY That bai");
     }
@@ -132,7 +117,7 @@ function* getInforUserCartMethod({ payload }) {
         payload: res.data.data?.listData || [],
       });
 
-      console.log("getInforUserCartMethod THANH CONG");
+      // console.log("getInforUserCartMethod THANH CONG");
       // navigate(Auth.AuthStack.screens.SignIn_SignUp.name);
     } else {
       console.log("getInforUserCartMethod sai gi do");
@@ -156,13 +141,38 @@ function* getInforDeliveryAddressMethod({ payload }) {
         payload: res.data?.data || [],
       });
 
-      console.log("getInforUserCartMethod THANH CONG");
+      // console.log("getInforUserCartMethod THANH CONG");
       // navigate(Auth.AuthStack.screens.SignIn_SignUp.name);
     } else {
       console.log("getInforUserCartMethod sai gi do");
     }
   } catch (e) {
     console.log("getInforUserCartMethod FAILED", e);
+  } finally {
+  }
+}
+
+function* updateInforUserMethod({ payload }) {
+  try {
+    // const dispatch = useDispatch();
+    const res = yield call(updateInforUser, {
+      ...payload,
+    });
+    console.log("ZO UPDATE USER", res.data);
+    if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
+      // yield put({
+      //   type: Actions.SET_INFOR_DELIVERY_ADDRESS,
+      //   payload: res.data?.data || [],
+      // });
+      alert("Thay đổi thành công");
+
+      // console.log("Thay doi THANH CONG");
+      // navigate(Auth.AuthStack.screens.SignIn_SignUp.name);
+    } else {
+      console.log("updateInforUserMethod sai gi do");
+    }
+  } catch (e) {
+    console.log("updateInforUserMethod FAILED", e);
   } finally {
   }
 }
@@ -175,4 +185,5 @@ export default function* Saga() {
     Actions.GET_INFOR_DELIVERY_ADDRESS,
     getInforDeliveryAddressMethod
   );
+  yield takeEvery(Actions.UPDATE_USER_INFOR, updateInforUserMethod);
 }

@@ -16,41 +16,16 @@ import { useSelector } from "react-redux";
 import { listDeliveryAddressSelector } from "../../../../Store/Auth/selectors";
 export default function AddressList() {
   const navigation = useNavigation();
-  const [personalInfo, setPersonalInfo] = useState({
-    name: "Phan Thuan",
-    phone: "0909319641",
-    address: "B386/15, kp3, DHT, Q12",
-  });
-  const addressList = [
-    {
-      name: "Phan Thuan",
-      phone: "0909319641",
-      address: "B386/15, kp3, DHT, Q12",
-      isSelected: true,
-    },
-    {
-      name: "Phan Thuan",
-      phone: "0909319641",
-      address: "B386/15, kp3, DHT, Q12",
-      isSelected: false,
-    },
-    {
-      name: "Phan Thuan",
-      phone: "0909319641",
-      address: "B386/15, kp3, DHT, Q12",
-      isSelected: false,
-    },
-  ];
+
   const handleChangeAddress = (item) => {
     navigation.navigate("UpdateAddress", { detail: item });
   };
   const listAddress = useSelector(listDeliveryAddressSelector);
-  console.log("LIST ADDRESS", listAddress);
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
         <View style={styles.mainWrapper}>
-          {addressList.map((item, index) => (
+          {listAddress.map((item, index) => (
             <View
               key={index}
               style={[
@@ -72,7 +47,7 @@ export default function AddressList() {
                     item?.isSelected && { color: "white" },
                   ]}
                 >
-                  {item.name}
+                  {listAddress.address}
                 </Text>
                 <Text
                   style={[
@@ -80,7 +55,7 @@ export default function AddressList() {
                     item?.isSelected && { color: "white" },
                   ]}
                 >
-                  {item.phone}
+                  {listAddress.districtName}
                 </Text>
                 <Text
                   style={[
@@ -112,7 +87,10 @@ export default function AddressList() {
               </TouchableOpacity>
             </View>
           ))}
-          <TouchableOpacity style={styles.addAddressButton}>
+          <TouchableOpacity
+            style={styles.addAddressButton}
+            onPress={handleChangeAddress}
+          >
             <Text style={{ fontSize: 17, color: "white", textAlign: "center" }}>
               THÊM ĐỊA CHỈ
             </Text>

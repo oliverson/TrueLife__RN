@@ -13,42 +13,18 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import NavBarBottom from "../../../../Components/NavBarBottom/NavBarBottom";
 import moment from "moment/moment";
+import { listCartUserSelector } from "../../../../Store/Auth/selectors";
+import { useSelector } from "react-redux";
 export default function PurchaseHistory() {
   const navigation = useNavigation();
-  const [personalInfo, setPersonalInfo] = useState({
-    name: "Phan Thuan",
-    phone: "0909319641",
-    address: "B386/15, kp3, DHT, Q12",
-  });
-  const historyList = [
-    {
-      code: "DH12345",
-      date: "10/09/2022",
-      address: "123 Nguyen Van Qua, Q12, HoChiMinh City",
-      price: 120000,
-      status: "done",
-    },
-    {
-      code: "DH22222",
-      date: "25/09/2022",
-      address: "123 Nguyen Van Qua, Q12, HoChiMinh City",
-      price: 120000,
-      status: "pending",
-    },
-    {
-      code: "DH33333",
-      date: "10/10/2022",
-      address: "123 Nguyen Van Qua, Q12, HoChiMinh City",
-      price: 120000,
-      status: "shipping",
-    },
-  ];
+  const getListCartUser = useSelector(listCartUserSelector);
+
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
         <View style={styles.mainWrapper}>
           <View style={styles.formWrapper}>
-            {historyList.map((item) => (
+            {getListCartUser.map((item) => (
               <View style={styles.itemWrapper} key={item.code}>
                 <View style={[styles.partWrapper, { flex: 1 }]}>
                   <Text style={styles.itemText}>{item.code}</Text>
@@ -71,7 +47,12 @@ export default function PurchaseHistory() {
                 <View style={styles.partWrapper}>
                   <Text style={styles.itemText}>{item.status}</Text>
                 </View>
-                <TouchableOpacity style={styles.partWrapper} onPress={() => {navigation.navigate("PurchaseDetail")}}>
+                <TouchableOpacity
+                  style={styles.partWrapper}
+                  onPress={() => {
+                    navigation.navigate("PurchaseDetail");
+                  }}
+                >
                   <Text style={styles.viewText}>Xem</Text>
                 </TouchableOpacity>
               </View>

@@ -11,7 +11,7 @@ export default {
   GET_INFOR_USER_CART: "/User/lay-danh-sach-don-hang",
   LIST_INFOR_ADDRESS_DELIVERY:
     "/AddressDeliveryUser/ListInfoAddressDeliveryUser",
-
+  UPDATE_ADDRESS_DELIVERY_USER: "/User/CreateInfoAddressDeliveryUser",
   /*Info User */
 
   /*Production*/

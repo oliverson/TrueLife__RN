@@ -31,15 +31,6 @@ export default function SignUpScreen() {
 
   const dispatch = useDispatch();
   const onSubmit = async () => {
-    // dispatch(
-    //   signUpActions({
-    //     userName: form.getValues("username"),
-    //     email: form.getValues("email"),
-    //     phone: form.getValues("phone"),
-    //     password: form.getValues("password"),
-    //     confirmPassword: form.getValues("repassword"),
-    //   })
-    // );
     try {
       const res = await signup({
         userName: form.getValues("username"),
@@ -49,20 +40,11 @@ export default function SignUpScreen() {
         confirmPassword: form.getValues("repassword"),
       });
       if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
-        dispatch(
-          showAlert({
-            type: "success",
-            message: res.data.retText,
-          })
-        );
+        alert("Đăng kí thành công");
+
         navigation.navigate("Login");
       } else {
-        dispatch(
-          showAlert({
-            type: "error",
-            message: res.data.retText,
-          })
-        );
+        alert(res.data.retText);
       }
     } catch (error) {
       console.log("error", error);
