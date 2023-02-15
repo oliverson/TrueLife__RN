@@ -1,5 +1,9 @@
 export const LOGIN_USER = "auth/LOGIN_USER";
-export const LOGIN_USER_SUCCESS = "atuh/LOGIN_USER_SUCCESS";
+export const SET_USER_DATA = "atuh/SET_USER_DATA";
 
 export const SIGN_UP_USER = "auth/SIGN_UP_USER";
 export const SIGN_UP_SUCCESS = "atuh/SIGN_UP_SUCCESS";
+export const GET_INFOR_USER_CART = "auth/GET_INFOR_USER_CART";
+export const SET_INFOR_USER_CART = "auth/SET_INFOR_USER_CART";
+export const GET_INFOR_DELIVERY_ADDRESS = "auth/GET_INFOR_DELIVERY_ADDRESS";
+export const SET_INFOR_DELIVERY_ADDRESS = "auth/SET_INFOR_DELIVERY_ADDRESS";

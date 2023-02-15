@@ -18,12 +18,14 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { signIn } from "../../Store/Auth/service";
 import validationSchema from "./validation";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Provider, useDispatch } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import Input from "../../Components/Input";
 import { getProfileUser, loginActions } from "../../Store/Auth/actions";
 import { login } from "../../Store/Auth/service";
 import { showAlert } from "../../Store/alert/actions";
 import { RETCODE_SUCCESS, SUCCESS } from "../../config/constants";
+import { userDataSelector } from "../../Store/Auth/selectors";
+
 export default function LoginScreen(props) {
   const form = useForm({
     resolver: yupResolver(validationSchema()),
@@ -31,46 +33,55 @@ export default function LoginScreen(props) {
   });
   const { navigation } = props;
   const dispatch = useDispatch();
+  const userData = useSelector(userDataSelector);
+  console.log("userData LOGIN", userData);
+  // const onSubmit = async () => {
+  //   dispatch(
+  //     loginActions({
+  //       userName: form.getValues("username"),
+  //       passWord: form.getValues("password"),
+  //     })
+  //   );
+  //   try {
+  //     const res = await login({
+  //       userName: form.getValues("username"),
+  //       passWord: form.getValues("password"),
+  //     });
 
-  const onSubmit = async () => {
+  //     if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
+  //       // const dataUser = res.data;
+  //       // dispatch(
+  //       //   getProfileUser({
+  //       //     dataUser,
+  //       //   })
+  //       // );
+  //       dispatch(
+  //         showAlert({
+  //           type: "success",
+  //           message: res.data.retText,
+  //         })
+  //       );
+  //       navigation.navigate("Home");
+  //     } else {
+  //       dispatch(
+  //         showAlert({
+  //           type: "error",
+  //           message: res.data.retText,
+  //         })
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.log("error", error);
+  //   } finally {
+  //   }
+  // };
+  const onSubmit = () => {
     dispatch(
       loginActions({
         userName: form.getValues("username"),
         passWord: form.getValues("password"),
       })
     );
-    try {
-      const res = await login({
-        userName: form.getValues("username"),
-        passWord: form.getValues("password"),
-      });
-
-      if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
-        // const dataUser = res.data;
-        // dispatch(
-        //   getProfileUser({
-        //     dataUser,
-        //   })
-        // );
-        dispatch(
-          showAlert({
-            type: "success",
-            message: res.data.retText,
-          })
-        );
-        navigation.navigate("Home");
-      } else {
-        dispatch(
-          showAlert({
-            type: "error",
-            message: res.data.retText,
-          })
-        );
-      }
-    } catch (error) {
-      console.log("error", error);
-    } finally {
-    }
   };
 
   return (

@@ -7,9 +7,9 @@ export function loginActions(payload) {
   };
 }
 
-export function getProfileUser(payload) {
+export function setProfileUser(payload) {
   return {
-    type: Actions.LOGIN_USER_SUCCESS,
+    type: Actions.SET_USER_DATA,
     payload,
   };
 }
@@ -17,6 +17,20 @@ export function getProfileUser(payload) {
 export function signUpActions(payload) {
   return {
     type: Actions.SIGN_UP_USER,
+    payload,
+  };
+}
+
+export function getInforUserCart(payload) {
+  return {
+    type: Actions.GET_INFOR_USER_CART,
+    payload,
+  };
+}
+
+export function getInforDeliveryAddress(payload) {
+  return {
+    type: Actions.GET_INFOR_DELIVERY_ADDRESS,
     payload,
   };
 }

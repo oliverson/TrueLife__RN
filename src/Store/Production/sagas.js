@@ -1,8 +1,9 @@
-import { put, call, takeEvery } from "redux-saga/effects";
+import { put, call, takeEvery, take } from "redux-saga/effects";
 
 import * as Actions from "./constants";
 import {
   getListProductsContent,
+  getListProductsFillter,
   getProfile,
   getTopSixNewProducts,
   getTopSixProductsPromotion,
@@ -130,6 +131,48 @@ function* getListProductsContentMethod({ payload }) {
   }
 }
 
+function* getListProductsFillterMethod({ payload }) {
+  try {
+    // const dispatch = useDispatch();
+    const res = yield call(getListProductsFillter, {
+      ...payload,
+    });
+    console.log("getListProductsFillterMethod", res.data);
+    if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
+      yield put({
+        type: Actions.SET_LIST_PRODUCTS_FILLTER,
+        payload: res.data.data?.listData || [],
+      });
+    } else {
+      console.log("SAI GI DO");
+    }
+  } catch (e) {
+    console.log("LOGIN_FAILED", e);
+  } finally {
+  }
+}
+
+function* getProductDetailsMethod({ payload }) {
+  try {
+    // const dispatch = useDispatch();
+    const res = yield call(getProductDetails, {
+      ...payload,
+    });
+    console.log("getProductDetailsMethod", res.data);
+    if (res.status === SUCCESS && res.data.retCode === RETCODE_SUCCESS) {
+      // yield put({
+      //   type: Actions.SET_DETAILS_PRODUCT,
+      //   payload: res.data.data?.listData || [],
+      // });
+    } else {
+      console.log("SAI GI DO");
+    }
+  } catch (e) {
+    console.log("LOGIN_FAILED", e);
+  } finally {
+  }
+}
+
 export default function* Saga() {
   yield takeEvery(
     Actions.GET_TOP_SIX_PRODUCTS_PROMOTION,
@@ -144,4 +187,9 @@ export default function* Saga() {
     Actions.GET_LIST_PRODUCTS_CONTENT,
     getListProductsContentMethod
   );
+  yield takeEvery(
+    Actions.GET_LIST_PRODUCTS_FILLTER,
+    getListProductsFillterMethod
+  );
+  yield takeEvery(Actions.GET_DETAILS_PRODUCT, getProductDetailsMethod);
 }

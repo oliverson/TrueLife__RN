@@ -14,8 +14,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import CheckBox from "../../Components/CheckBox/CheckBox";
 import Header from "./Components/Header/Header";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userDataSelector } from "../../Store/Auth/selectors";
+import { setProfileUser } from "../../Store/Auth/actions";
 
 export default function Personal() {
   const navigation = useNavigation();
@@ -25,6 +26,10 @@ export default function Personal() {
     address: "B386/15, kp3, DHT, Q12",
   });
   const profileData = useSelector(userDataSelector);
+  const dispacth = useDispatch();
+  const logout = () => {
+    dispacth(setProfileUser(null));
+  };
   console.log("DATA USER", JSON.stringify(profileData, null, 4));
   return (
     <View style={{ flex: 1 }}>
@@ -67,6 +72,15 @@ export default function Personal() {
           <Text style={{ fontSize: 18, color: "#999999" }}>
             LỊCH SỬ MUA HÀNG
           </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.addressWrapper,
+            { borderTopColor: "#d9d9d9", borderTopWidth: 1 },
+          ]}
+          onPress={logout}
+        >
+          <Text style={{ fontSize: 18, color: "#999999" }}>Đăng xuất</Text>
         </TouchableOpacity>
       </View>
       <NavBarBottom />

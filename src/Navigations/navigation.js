@@ -19,9 +19,13 @@ import YourCart from "../Screens/YourCart/YourCart";
 import { ROUTES } from "../config/constants";
 import { Title } from "react-native-paper";
 import { HomeIcon } from "../assets/svg";
+import { useSelector } from "react-redux";
+import { userDataSelector } from "../Store/Auth/selectors";
 const Stack = createStackNavigator();
 
 function Navigator() {
+  const userData = useSelector(userDataSelector);
+  const isLogin = !!userData?.userId;
   return (
     <Stack.Navigator
       screenOptions={{
@@ -30,84 +34,91 @@ function Navigator() {
         headerTintColor: "white",
         headerTitleStyle: { color: "white" },
       }}
-      // initialRouteName={ROUTES.HOME}
+      initialRouteName={isLogin ? ROUTES.HOME : ROUTES.LOGIN}
     >
-      <Stack.Screen
-        name={ROUTES.LOGIN}
-        component={LoginScreen}
-        options={(route) => ({ title: "Đăng Nhập" })}
-      />
-      <Stack.Screen name={ROUTES.SIGN_UP} component={SignUpScreen} />
-      <Stack.Screen
-        name={ROUTES.HOME}
-        component={Home}
-        options={(route) => ({ title: "Trang chủ" })}
-      />
-      <Stack.Screen
-        name={ROUTES.CONTACT}
-        component={Contact}
-        options={(route) => ({ title: "Liên hệ" })}
-      />
-      <Stack.Screen
-        name={ROUTES.BOOKING}
-        component={Booking}
-        options={(route) => ({ title: "Đơn hàng" })}
-      />
-      <Stack.Screen
-        name={ROUTES.PRODUCT}
-        component={Product}
-        options={(route) => ({ title: "Danh mục" })}
-      />
-      <Stack.Screen
-        name={ROUTES.PRODUCT_DETAIL}
-        component={ProductDetail}
-        options={(route) => ({ title: "Chi tiết" })}
-      />
-      <Stack.Screen
-        name={ROUTES.SELECT_SERVICE}
-        component={ServiceSelect}
-        options={(route) => ({ title: "Chọn dịch vụ" })}
-      />
-      <Stack.Screen
-        name={ROUTES.YOUR_CART}
-        component={YourCart}
-        options={(route) => ({ title: "Giỏ hàng" })}
-      />
-      <Stack.Screen
-        name={ROUTES.PERSONAL}
-        component={Personal}
-        options={(route) => ({ title: "Cá nhân" })}
-      />
-      <Stack.Screen
-        name={ROUTES.MAIN_INFO_CHANGE}
-        component={MainInfoChange}
-        options={(route) => ({ title: "Thông tin cá nhân" })}
-      />
-      <Stack.Screen
-        name={ROUTES.ADDRESS_LIST}
-        component={AddressList}
-        options={(route) => ({ title: "Địa chỉ" })}
-      />
-      <Stack.Screen
-        name={ROUTES.UPDATE_ADDRESS}
-        component={UpdateAddress}
-        options={(route) => ({ title: "Địa chỉ" })}
-      />
-      <Stack.Screen
-        name={ROUTES.CHANGE_PASS}
-        component={ChangePassword}
-        options={(route) => ({ title: "Đổi mật khẩu" })}
-      />
-      <Stack.Screen
-        name={ROUTES.PUR_HISTORY}
-        component={PurchaseHistory}
-        options={(route) => ({ title: "Lịch sử đơn hàng" })}
-      />
-      <Stack.Screen
-        name={ROUTES.PUR_DETAIL}
-        component={PurchaseDetail}
-        options={(route) => ({ title: "Chi tiết đơn hàng" })}
-      />
+      {isLogin ? (
+        <>
+          <Stack.Screen
+            name={ROUTES.HOME}
+            component={Home}
+            options={(route) => ({ title: "Trang chủ" })}
+          />
+          <Stack.Screen
+            name={ROUTES.CONTACT}
+            component={Contact}
+            options={(route) => ({ title: "Liên hệ" })}
+          />
+          <Stack.Screen
+            name={ROUTES.BOOKING}
+            component={Booking}
+            options={(route) => ({ title: "Đơn hàng" })}
+          />
+          <Stack.Screen
+            name={ROUTES.PRODUCT}
+            component={Product}
+            options={(route) => ({ title: "Danh mục" })}
+          />
+          <Stack.Screen
+            name={ROUTES.PRODUCT_DETAIL}
+            component={ProductDetail}
+            options={(route) => ({ title: "Chi tiết" })}
+          />
+          <Stack.Screen
+            name={ROUTES.SELECT_SERVICE}
+            component={ServiceSelect}
+            options={(route) => ({ title: "Chọn dịch vụ" })}
+          />
+          <Stack.Screen
+            name={ROUTES.YOUR_CART}
+            component={YourCart}
+            options={(route) => ({ title: "Giỏ hàng" })}
+          />
+          <Stack.Screen
+            name={ROUTES.PERSONAL}
+            component={Personal}
+            options={(route) => ({ title: "Cá nhân" })}
+          />
+          <Stack.Screen
+            name={ROUTES.MAIN_INFO_CHANGE}
+            component={MainInfoChange}
+            options={(route) => ({ title: "Thông tin cá nhân" })}
+          />
+          <Stack.Screen
+            name={ROUTES.ADDRESS_LIST}
+            component={AddressList}
+            options={(route) => ({ title: "Địa chỉ" })}
+          />
+          <Stack.Screen
+            name={ROUTES.UPDATE_ADDRESS}
+            component={UpdateAddress}
+            options={(route) => ({ title: "Địa chỉ" })}
+          />
+          <Stack.Screen
+            name={ROUTES.CHANGE_PASS}
+            component={ChangePassword}
+            options={(route) => ({ title: "Đổi mật khẩu" })}
+          />
+          <Stack.Screen
+            name={ROUTES.PUR_HISTORY}
+            component={PurchaseHistory}
+            options={(route) => ({ title: "Lịch sử đơn hàng" })}
+          />
+          <Stack.Screen
+            name={ROUTES.PUR_DETAIL}
+            component={PurchaseDetail}
+            options={(route) => ({ title: "Chi tiết đơn hàng" })}
+          />
+        </>
+      ) : (
+        <>
+          <Stack.Screen
+            name={ROUTES.LOGIN}
+            component={LoginScreen}
+            options={(route) => ({ title: "Đăng Nhập" })}
+          />
+          <Stack.Screen name={ROUTES.SIGN_UP} component={SignUpScreen} />
+        </>
+      )}
     </Stack.Navigator>
   );
 }

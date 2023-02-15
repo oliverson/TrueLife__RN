@@ -7,6 +7,8 @@ const initState = {
   productListProductContentData: null,
   productSixNewProductData: null,
   productSixSellingProductData: null,
+  listProductFilter: null,
+  productDetails: null,
 };
 const ProductionsData = (state = initState, action = {}) => {
   switch (action.type) {
@@ -32,6 +34,18 @@ const ProductionsData = (state = initState, action = {}) => {
       return {
         ...state,
         productListProductContentData: [...action.payload],
+      };
+    }
+    case Actions.SET_LIST_PRODUCTS_FILLTER: {
+      return {
+        ...state,
+        listProductFilter: [...action.payload],
+      };
+    }
+    case Actions.SET_DETAILS_PRODUCT: {
+      return {
+        ...state,
+        productDetails: [...action.payload],
       };
     }
 

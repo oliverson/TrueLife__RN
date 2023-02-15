@@ -18,3 +18,11 @@ export const productListProductContentDataSelector = createSelector(
   product,
   (data) => data?.productListProductContentData || null
 );
+export const listProductFilterSelector = createSelector(
+  product,
+  (data) => data?.listProductFilter || []
+);
+export const productDetailsSelector = createSelector(
+  product,
+  (data) => data?.productDetails || []
+);

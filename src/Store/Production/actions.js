@@ -24,3 +24,17 @@ export function getListProductsContentActions(payload) {
     payload,
   };
 }
+
+export function getListProductsFlitter(payload) {
+  return {
+    type: Actions.GET_LIST_PRODUCTS_FILLTER,
+    payload,
+  };
+}
+
+export function getDeatilsProduct(payload) {
+  return {
+    type: Actions.GET_PRODUCTS_DEATILS,
+    payload,
+  };
+}

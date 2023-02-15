@@ -12,6 +12,8 @@ import styles from "./styles";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import NavBarBottom from "../../../../Components/NavBarBottom/NavBarBottom";
+import { useSelector } from "react-redux";
+import { listDeliveryAddressSelector } from "../../../../Store/Auth/selectors";
 export default function AddressList() {
   const navigation = useNavigation();
   const [personalInfo, setPersonalInfo] = useState({
@@ -42,6 +44,8 @@ export default function AddressList() {
   const handleChangeAddress = (item) => {
     navigation.navigate("UpdateAddress", { detail: item });
   };
+  const listAddress = useSelector(listDeliveryAddressSelector);
+  console.log("LIST ADDRESS", listAddress);
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>

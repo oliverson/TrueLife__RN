@@ -15,6 +15,8 @@ import NavBarBottom from "../../../../Components/NavBarBottom/NavBarBottom";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
+import { useSelector } from "react-redux";
+import { userDataSelector } from "../../../../Store/Auth/selectors";
 export default function MainInfoChange() {
   const navigation = useNavigation();
   const [datePicker, setDatePicker] = useState(false);
@@ -30,6 +32,8 @@ export default function MainInfoChange() {
     setDate(selectedDate);
     setDatePicker(false);
   };
+  const userData = useSelector(userDataSelector);
+  console.log("userData", userData);
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.mainWrapper}>
@@ -50,7 +54,7 @@ export default function MainInfoChange() {
         </TouchableOpacity>
         <TextInput
           style={styles.inputArticle}
-          placeholder="Tên đăng nhập..."
+          placeholder={userData.userName}
           placeholderTextColor="#B1B1B1"
         />
         <TextInput
@@ -70,10 +74,10 @@ export default function MainInfoChange() {
         />
 
         {datePicker && (
-          <RNDateTimePicker value={date} onChange={handleDateChange}/>
+          <RNDateTimePicker value={date} onChange={handleDateChange} />
         )}
         <TouchableOpacity
-          style={[styles.inputArticle, {paddingVertical: 15}]}
+          style={[styles.inputArticle, { paddingVertical: 15 }]}
           onPress={showDatePicker}
         >
           <Text style={{ fontSize: 15, color: "#B1B1B1" }}>

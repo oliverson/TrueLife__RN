@@ -7,6 +7,12 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import CheckBox from "../../Components/CheckBox/CheckBox";
 import MiniNumberInput from "../../Components/MiniNumberInput/MiniNumberInput";
 import { BinIcon } from "../../assets/svg";
+import { useDispatch, useSelector } from "react-redux";
+import { getInforUserCart } from "../../Store/Auth/actions";
+import {
+  listCartUserSelector,
+  userDataSelector,
+} from "../../Store/Auth/selectors";
 
 export default function YourCart() {
   const navigation = useNavigation();
@@ -29,14 +35,6 @@ export default function YourCart() {
       name: "KeyCap",
       isChecked: false,
     },
-    // {
-    //   id: 2,
-    //   price: 5000,
-    //   quantity: 1,
-    //   url: "https://images.unsplash.com/photo-1674082540761-440dc1b2326b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80",
-    //   name: "Con ghệ miền Tây",
-    //   isChecked: false,
-    // },
   ]);
   const handleCheckBoxPress = (item) => {
     const index = productList.findIndex((object) => object.id === item.id);
@@ -84,6 +82,21 @@ export default function YourCart() {
   const handlePurchasePress = () => {
     navigation.navigate("Booking");
   };
+  const dispatch = useDispatch();
+  const getInfoUser = useSelector(userDataSelector);
+  const getListCartUser = useSelector(listCartUserSelector);
+  const handleGetListUserCart = () => {
+    dispatch(
+      getInforUserCart({
+        userId: getInfoUser?.userId,
+      })
+    );
+  };
+  useEffect(() => {
+    handleGetListUserCart();
+  }, []);
+  console.log("USERDAT CART", JSON.stringify(getListCartUser, null, 4));
+
   return (
     <View style={styles.mainWrapper}>
       <ScrollView style={{ height: "100%", flex: 1 }}>
