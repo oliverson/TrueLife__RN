@@ -41,3 +41,10 @@ export function updateInforUserActions(payload) {
     payload,
   };
 }
+
+export function getHistoryOrderUser() {
+  return {
+    type: Actions.SET_INFOR_USER_CART,
+    payload,
+  };
+}
